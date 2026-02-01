@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: vish2004
+      MYSQL_DATABASE: cli_chat
+      MYSQL_USER: vishwa
+      MYSQL_PASSWORD: vish2004
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - redis-network
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight
+    restart: always
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
+    networks:
+      - redis-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  redis-network:
+    driver: bridge
