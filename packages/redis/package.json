@@ -5,7 +5,8 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5",
+        "@repo/types": "workspace:*"
   },
   "private": true,
   "type": "module"

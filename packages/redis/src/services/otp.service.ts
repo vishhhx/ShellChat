@@ -1,6 +1,6 @@
 import { getRedisClient } from "../client";
 
-type OtpPurpose = "login" | "email" | "reset";
+import  { OtpPurpose}from "@repo/types/types";
 
 export class OtpService {
   private static key(purpose: OtpPurpose, identifier: string) {
