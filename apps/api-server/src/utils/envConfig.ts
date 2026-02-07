@@ -1,0 +1,7 @@
+export const EnvConfig = {
+  PORT: process.env.PORT!,
+  JWT_ACCESS_TOKEN: process.env.JWT_ACCESS_TOKEN!,
+  JWT_ACCESS_TOKEN_EXPIRY: process.env.JWT_ACCESS_TOKEN_EXPIRY!,
+  JWT_REFRESH_TOKEN: process.env.JWT_REFRESH_TOKEN!,
+  JWT_REFRESH_TOKEN_EXPIRY: process.env.JWT_REFRESH_TOKEN_EXPIRY!,
+};

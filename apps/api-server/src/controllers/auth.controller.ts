@@ -43,7 +43,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     return res.status(HttpStatus.CREATED).json({
       success: true,
-      message: "User registered successfully",
+      message: "User registered successfully please verify",
       user: result.user,
     });
   } catch (error) {
