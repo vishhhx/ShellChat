@@ -26,12 +26,12 @@ export const registerUser = async (req: Request, res: Response) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
 
     const result = await UserRepository.registerUser({
       name,
       email,
-      password: hashedPassword,
+      passwordHash,
     });
 
     if (!result.success) {
@@ -54,70 +54,69 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-const loginUser = async (req: Request, res: Response) => {
-  try {
-    const parsedData = loginSchema.safeParse(req.body);
+// const loginUser = async (req: Request, res: Response) => {
+//   try {
+//     const parsedData = loginSchema.safeParse(req.body);
 
-    if (!parsedData.success) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        success: false,
-        message: "Invalid input data",
-        errors: parsedData.error.flatten(),
-      });
-    }
-    const { identifier, password } = parsedData.data;
+//     if (!parsedData.success) {
+//       return res.status(HttpStatus.BAD_REQUEST).json({
+//         success: false,
+//         message: "Invalid input data",
+//         errors: parsedData.error.flatten(),
+//       });
+//     }
+//     const { identifier, password } = parsedData.data;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const { success, user, error } =
-      await UserRepository.checkExistingUser(identifier);
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const { success, user, error } =
+//       await UserRepository.checkExistingUser(identifier);
 
-    if (!success) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        success: false,
-        message: error,
-      });
-    }
+//     if (!success) {
+//       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+//         success: false,
+//         message: error,
+//       });
+//     }
 
-    if (!user) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({
-        success: false,
-        message: "Invalid credentials",
-      });
-    }
+//     if (!user) {
+//       return res.status(HttpStatus.UNAUTHORIZED).json({
+//         success: false,
+//         message: "Invalid credentials",
+//       });
+//     }
 
-    const passwordMatch = await bcrypt.compare(password, user.passwword);
+//     const passwordMatch = await bcrypt.compare(password, user.passwword);
 
-    if (!passwordMatch) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({
-        success: false,
-        message: "Invalid credentials",
-      });
-    }
+//     if (!passwordMatch) {
+//       return res.status(HttpStatus.UNAUTHORIZED).json({
+//         success: false,
+//         message: "Invalid credentials",
+//       });
+//     }
 
-    return res.status(HttpStatus.OK).json({
-      success: true,
-      message: "Login successful",
-    });
-  } catch (error) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: "An internal server error occurred",
-    });
-  }
-};
+//     return res.status(HttpStatus.OK).json({
+//       success: true,
+//       message: "Login successful",
+//     });
+//   } catch (error) {
+//     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+//       success: false,
+//       message: "An internal server error occurred",
+//     });
+//   }
+// };
 
-
-const logoutUser=async (req: Request, res: Response) => {
-  try {   
-    //todo:i should implement it but for now i will just return success response
-    return res.status(HttpStatus.OK).json({
-      success: true,
-      message: "Logout successful",
-    });
-  } catch (error) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: "An internal server error occurred",
-    });
-  }
-}
+// const logoutUser=async (req: Request, res: Response) => {
+//   try {
+//     //todo:i should implement it but for now i will just return success response
+//     return res.status(HttpStatus.OK).json({
+//       success: true,
+//       message: "Logout successful",
+//     });
+//   } catch (error) {
+//     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+//       success: false,
+//       message: "An internal server error occurred",
+//     });
+//   }
+// }

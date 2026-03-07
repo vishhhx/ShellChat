@@ -37,9 +37,19 @@ services:
     networks:
       - redis-network
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/rabbitmq
+
+
 volumes:
   mysql_data:
   redis_data:
+  rabbitmq_data:
 
 networks:
   redis-network:

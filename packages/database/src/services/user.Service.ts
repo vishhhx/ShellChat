@@ -1,16 +1,17 @@
 import { eq, or } from "drizzle-orm";
 import { usersTable } from "../db/schema";
-import { db } from "../index";
+import { getDb } from "../index";
 import { v4 as uuid4 } from "uuid";
 
 type RegisterUserInput = {
   name: string;
   email: string;
-  password: string;
+  passwordHash: string;
 };
 
 export class UserRepository {
-  static async registerUser({ name, email, password }: RegisterUserInput) {
+  static async registerUser({ name, email, passwordHash }: RegisterUserInput) {
+    const db = await getDb();
     try {
       if (!db) {
         throw new Error("Database not initialized");
@@ -21,7 +22,7 @@ export class UserRepository {
         id: userId,
         name,
         email,
-        passwordHash: password,
+        passwordHash,
       });
 
       return {
@@ -34,6 +35,7 @@ export class UserRepository {
         },
       };
     } catch (error) {
+      console.log(error)
       return {
         success: false,
         error:
@@ -43,6 +45,7 @@ export class UserRepository {
   }
 
   static async checkExistingUser(identifier: string) {
+    const db = await getDb();
     try {
       if (!db) {
         throw new Error("Database not initialized");
@@ -71,6 +74,7 @@ export class UserRepository {
   }
 
   static async getUserByIdentifier(identifier: string) {
+    const db = await getDb();
     try {
       if (!db) {
         throw new Error("Database not initialized");
